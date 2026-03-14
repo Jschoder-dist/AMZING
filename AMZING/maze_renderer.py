@@ -29,8 +29,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Final, List, Set, Tuple
 
-from maze_generator import Maze
-from maze_types import WALL_E, WALL_S, Point
+from maze_generator import ALL_WALLS, Maze, WALL_E, WALL_S, Point
 
 # ANSI escape codes
 _RESET: Final[str] = "\033[0m"
@@ -155,7 +154,6 @@ def _cell_color(
     wall_bg: str,
 ) -> str:
     """Return the colored pixel string for a maze cell."""
-    from maze_types import ALL_WALLS
 
     if bits == ALL_WALLS:
         # Fully closed cell = part of the 42 logo
@@ -190,7 +188,6 @@ def _passage_color(
     The passage is red if it belongs to the logo.
     Otherwise it is transparent (open corridor).
     """
-    from maze_types import ALL_WALLS
 
     if bits == ALL_WALLS:
         return _COLOR_LOGO + "  " + _RESET

@@ -17,11 +17,10 @@ Interactive commands:
 import subprocess
 import sys
 
-from config_parser import ConfigError, parse_config_file
+from config_parser import ConfigError, MazeConfig, parse_config_file
 from maze_generator import Maze, MazeGenerator
 from maze_renderer import RenderState, render_maze
 from maze_solver import solve_shortest_path
-from maze_types import MazeConfig
 from maze_writer import write_maze_output
 
 

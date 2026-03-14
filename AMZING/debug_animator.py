@@ -14,10 +14,10 @@ from collections import deque
 from typing import Set, Tuple
 
 from config_parser import parse_config_file
-from maze_generator import MazeGenerator
+from maze_generator import (
+    ALL_WALLS, Maze, MazeGenerator, WALL_E, WALL_N, WALL_S, WALL_W, Point,
+)
 from maze_renderer import _COLOR_LOGO, _COLOR_PATH, _RESET
-from maze_types import ALL_WALLS, WALL_E, WALL_N, WALL_S, WALL_W, Point
-from maze_generator import Maze
 
 # Animation colors
 _COLOR_WALL = "\033[48;5;235m"    # dark grey

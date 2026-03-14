@@ -23,8 +23,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from maze_generator import Maze
-from maze_types import Point
+from maze_generator import Maze, Point
 
 
 class MazeOutputError(Exception):

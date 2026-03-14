@@ -20,10 +20,24 @@ Optional keys:
 
 from __future__ import annotations
 
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Dict, Optional
 
-from maze_types import MazeConfig, Point
+from maze_generator import Point
+
+
+@dataclass(frozen=True)
+class MazeConfig:
+    """All settings read from the configuration file."""
+
+    width: int
+    height: int
+    entry: Point
+    exit: Point
+    output_file: str
+    perfect: bool           # True = one unique path from entry to exit
+    seed: Optional[int] = None  # Seed for reproducible random mazes
 
 
 class ConfigError(Exception):

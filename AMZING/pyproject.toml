@@ -1,0 +1,19 @@
+[project]
+name = "a-maze-ing"
+version = "0.1.0"
+requires-python = ">=3.11"
+dependencies = [
+    "maze-generator",
+]
+
+[dependency-groups]
+dev = [
+    "flake8",
+    "mypy",
+]
+
+[tool.uv.workspace]
+members = ["packages/*"]
+
+[tool.uv.sources]
+maze-generator = { workspace = true }

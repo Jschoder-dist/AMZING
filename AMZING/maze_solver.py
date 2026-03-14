@@ -25,8 +25,7 @@ from __future__ import annotations
 from collections import deque
 from typing import Dict, List, Tuple
 
-from maze_generator import Maze
-from maze_types import WALL_E, WALL_N, WALL_S, WALL_W, Point
+from maze_generator import Maze, WALL_E, WALL_N, WALL_S, WALL_W, Point
 
 # Directions: (delta_x, delta_y, wall_bit_to_check, letter_for_path)
 DIRECTIONS: List[Tuple[int, int, int, str]] = [

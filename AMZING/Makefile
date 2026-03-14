@@ -1,9 +1,6 @@
-PYTHON   = python3
-VENV     = venv
-BIN      = $(VENV)/bin
-MAIN     = a_maze_ing.py
-CONFIG   = config.txt
-RM       = rm -rf
+MAIN   = a_maze_ing.py
+CONFIG = config.txt
+UV     = python3 -m uv
 
 GREEN  = \033[0;32m
 CYAN   = \033[0;36m
@@ -13,26 +10,21 @@ all: install
 	@echo "$(GREEN)Ready. Run 'make run' to start.$(RESET)"
 
 install:
-	@echo "$(CYAN)Creating virtual environment and installing tools...$(RESET)"
-	@$(PYTHON) -m venv $(VENV)
-	@$(BIN)/pip install --upgrade pip --quiet
-	@$(BIN)/pip install flake8 mypy --quiet
+	@echo "$(CYAN)Installing dependencies with uv...$(RESET)"
+	@$(UV) sync
 	@echo "$(GREEN)Done.$(RESET)"
 
 run:
-	@if [ ! -d "$(VENV)" ]; then make install; fi
-	$(BIN)/python3 $(MAIN) $(CONFIG)
+	$(UV) run $(MAIN) $(CONFIG)
 
 debug:
-	@if [ ! -d "$(VENV)" ]; then make install; fi
-	$(BIN)/python3 -m pdb $(MAIN) $(CONFIG)
+	$(UV) run -m pdb $(MAIN) $(CONFIG)
 
 lint:
-	@if [ ! -d "$(VENV)" ]; then make install; fi
 	@echo "$(CYAN)flake8...$(RESET)"
-	@$(BIN)/flake8 . --exclude=$(VENV)
+	@$(UV) run flake8 . --exclude=.venv,packages
 	@echo "$(CYAN)mypy...$(RESET)"
-	@$(BIN)/mypy . --exclude $(VENV) \
+	@$(UV) run mypy . --exclude '(\.venv|packages)' \
 		--warn-return-any \
 		--warn-unused-ignores \
 		--ignore-missing-imports \
@@ -41,21 +33,28 @@ lint:
 	@echo "$(GREEN)Lint passed.$(RESET)"
 
 lint-strict:
-	@if [ ! -d "$(VENV)" ]; then make install; fi
-	@$(BIN)/flake8 .
-	@$(BIN)/mypy . --strict
+	@$(UV) run flake8 .
+	@$(UV) run mypy . --strict
+
+build:
+	@echo "$(CYAN)Building maze-generator wheel and sdist...$(RESET)"
+	@$(UV) build --package maze-generator --out-dir dist/
+	@mv dist/* .
+	@rmdir dist/
+	@echo "$(GREEN)Done — .whl and .tar.gz are in the current directory.$(RESET)"
 
 clean:
 	@echo "$(CYAN)Cleaning caches...$(RESET)"
-	@$(RM) .mypy_cache
-	@find . -type d -name "__pycache__" -exec $(RM) {} + 2>/dev/null; true
+	@rm -rf .mypy_cache
+	@find . -type d -name "__pycache__" -exec rm -rf {} + 2>/dev/null; true
 	@find . -type f -name "*.pyc" -delete
 
 fclean: clean
-	@echo "$(CYAN)Removing virtual environment...$(RESET)"
-	@$(RM) $(VENV)
-	@$(RM) maze.txt
+	@echo "$(CYAN)Removing uv environment...$(RESET)"
+	@rm -rf .venv
+	@rm -rf maze.txt
+	@rm -rf maze_generator-*.whl maze_generator-*.tar.gz dist/
 
 re: fclean all
 
-.PHONY: all install run debug lint lint-strict clean fclean re
+.PHONY: all install run debug lint lint-strict build clean fclean re
