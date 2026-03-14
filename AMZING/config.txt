@@ -1,0 +1,23 @@
+# A-Maze-ing configuration file
+# --------------------------------
+# One KEY=VALUE per line.
+# Lines starting with '#' are ignored.
+
+# Maze dimensions (number of cells)
+WIDTH=15
+HEIGHT=14
+
+# Entry and exit positions (x,y) — must be different and inside the maze
+ENTRY=0,4
+EXIT=9,5
+
+# File where the maze grid will be saved
+OUTPUT_FILE=maze.txt
+
+# PERFECT=True  → exactly one path between any two cells (no loops)
+# PERFECT=False → extra passages are added (creates loops and shortcuts)
+PERFECT=True
+
+# SEED: optional integer for reproducible mazes.
+# Remove or comment this line to get a different maze each time.
+SEED=42
